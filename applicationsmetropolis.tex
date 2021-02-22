@@ -9,6 +9,9 @@
 \input{../../../../etc/macros} %\input{../../../../etc/mzlatex_macros}
 \input{../../../../etc/pdf_macros}
 
+% Define a new command so Boltzmann constant is not confused.
+\newcommand{\kT}{{\text k}_{\text{Boltz}}T}
+
 \bibliographystyle{plain}
 
 \begin{document}
@@ -56,8 +59,8 @@ separately?  What are the conditional probability density functions \( f
         For the Ising model the Metropolis algorithm takes a random walk
         through the configuration space, visiting more frequently
         occurring spin configurations more often.  Instead of choosing
-        configurations randomly, then weighting them with \( \EulerE^{-E/kT}
-        \), instead choose configurations with probability \( \EulerE^{-E/kT}
+        configurations randomly, then weighting them with \( \EulerE^{-E/\kT}
+        \), instead choose configurations with probability \( \EulerE^{-E/\kT}
         \) and weight them evenly.
     \item
         The Gibbs sampler is an algorithm for generating random
@@ -90,7 +93,8 @@ separately?  What are the conditional probability density functions \( f
         ferromagnet capturing the tendency for neighboring sites to
         align with each other.
     \item
-        A \defn{phase transition} is a dramatic change as a parameter
+        A \defn{phase transition} is a dramatic change between
+        differently ordered magnetic states as a parameter
         passes through a critical value.
     \item
         A \defn{configuration} is a matrix of spins, \( \omega = (\omega_
@@ -99,7 +103,7 @@ separately?  What are the conditional probability density functions \( f
         The frequency distribution of spin configurations is
         proportional to the \defn{Boltzmann weight} \(
         \operatorname{Boltz}
-        (\omega) = \EulerE^{-E(\omega)/kT} \) where \( k \) is the
+        (\omega) = \EulerE^{-E(\omega)/\kT} \) where \( \text{k}_{\text{Boltz}} \) is the
         Boltzmann constant.
     \item
         The \defn{magnetization} at temperature \( T \) is \( \E{M}_T \)
@@ -109,16 +113,16 @@ separately?  What are the conditional probability density functions \( f
             \operatorname{Boltz}
             (\omega) \\
             &= \frac{1}{Z} \sum\limits_{\omega \in \Omega} M(\omega)
-            \EulerE^{-E(\omega)/kT}
+            \EulerE^{-E(\omega)/\kT}
         \end{align*}
-        where \( Z = \sum_{\omega} \EulerE^{-E(\omega)/kT} \) is the
+        where \( Z = \sum_{\omega} \EulerE^{-E(\omega)/\kT} \) is the
         partition function, the probability normalizing factor.
     \item
         A probability distribution whose conditional probabilities
         depend on only the values in a neighborhood system is called a
         \defn{Gibbs distribution}.
     \item
-        The Gibbs sampler generates a sample from \( f(x) \) by sampling
+        The \defn{Gibbs sampler} generates a sample from \( f(x) \) by sampling
         instead from the conditional distribution \( f(x \given y) \)
         and \( f(y \given x) \), distributions that are often known in
         statistical models.  This is done by generating a ``Gibbs
@@ -158,7 +162,8 @@ is a simple mathematical model of a ferromagnet capturing the tendency
 for neighboring sites to align with each other or with an external
 magnetic field.  The Ising model exhibits a \defn{phase transition},%
 \index{phase transition}
-a dramatic change as a parameter passes through a critical value.  The
+a dramatic change between differently ordered magnetic states
+as a parameter passes through a critical value.  The
 phase change is in the \emph{magnetization},%
 \index{magnetization}
 the measure of the property of being magnetic.  The goal of the model is
@@ -167,8 +172,8 @@ not have a phase transition, first proven by Ernst Ising in 1925.  A
 1944 result of Lars Onsager gives the exact value for the critical
 temperature in the two-dimensional Ising model:
 \[
-    \frac{kT_c}{J} = \frac{2}{\ln(1 + \sqrt{2})} \approx 2.269
-\] where \( k \) is the Boltzmann constant from statistical mechanics
+    \frac{\kT_c}{J} = \frac{2}{\ln(1 + \sqrt{2})} \approx 2.269
+\] where \( \text{k}_{\text{Boltz}} \) is the Boltzmann constant from statistical mechanics
 and \( J \) is a proportionality constant for the strength of alignment.
 
 The Ising model uses a bounded planar square lattice with \( N^2 \)
@@ -191,7 +196,7 @@ constant with units of energy for the strength of the binding between
 neighbors), \( H \ge 0 \) represents the external field and \( \langle
 i, j \rangle \) indicates the set of \( 4 \) sites that are periodic
 nearest neighbors, sites in the lattice with a horizontal or vertical
-bond.  For the top row, \( i = 1 \), periodic means \( \left\langle 1, j
+bond.  For the top row with \( i = 1 \), periodic means \( \left\langle 1, j
 \right\rangle = \set{(2,j), (1, j-1), (N,j), (1, j+1)} \), interpreting
 periodically if \( j=1 \) or \( j=N \).  Similarly for the bottom row,
 and the leftmost and rightmost columns.  The frequency distribution of
@@ -199,18 +204,18 @@ spin configurations is proportional to the \defn{Boltzmann weight}%
 \index{Boltzmann weight}
 \(
 \operatorname{Boltz}
-(\omega) = \EulerE^{-E(\omega)/kT} \) where \( k \) is the Boltzmann
-constant, so \( kT \) has units of energy.  For completely ordered
+(\omega) = \EulerE^{-E(\omega)/\kT} \) where \( \text{k}_{\text{Boltz}} \) is the Boltzmann
+constant, so \( \kT \) has units of energy.  For completely ordered
 configurations with \( \omega_{i,j} \equiv +1 \) or \( \omega_{i,j}
 \equiv -1 \), \( E(\omega) = -J \cdot 4N^2 \) (low magnetization energy)
 and \(
 \operatorname{Boltz}
-(\omega) = \EulerE^{J \cdot 4N^2/kT} \) is large (relatively higher
+(\omega) = \EulerE^{J \cdot 4N^2/\kT} \) is large (relatively higher
 frequency).  For highly disordered configurations with \( \omega_{i,j} =
 \pm 1 \) distributed randomly, \( E(\omega) \approx 0 \) (higher
 magnetization energy) and \(
 \operatorname{Boltz}
-(\omega) \approx \EulerE^{-0/kT} \approx 1 \) is small (relatively lower
+(\omega) \approx \EulerE^{-0/\kT} \approx 1 \) is small (relatively lower
 frequency).
 
 For purposes of the example, assume there is no external field, so \(
@@ -218,19 +223,19 @@ H=0 \) and that \( J=1 \).
 
 For a configuration \( \omega \) the net spin is
 \[
-    M(\omega) = \abs{\sum\limits_{i,j=1}^N \omega_{(i,j)}}.
+    M(\omega) = \abs{\sum\limits_{i,j=1}^N \omega_{i,j}}.
 \] The \defn{magnetization}%
 \index{magnetization}
 at temperature \( T \) is \( \E{M}_T \) is the expected value of \( M(\omega)
 \):
-\begin{align*}
-    \E{M}_T &= \frac{1}{Z} \sum\limits_{\omega \in \Omega} M(\omega)
+\[
+    \E{M}_T = \frac{1}{Z} \sum\limits_{\omega \in \Omega} M(\omega)
     \operatorname{Boltz}
-    (\omega) \\
-    &= \frac{1}{Z} \sum\limits_{\omega \in \Omega} M(\omega) \EulerE^{-E
-    (\omega)/kT}.
-\end{align*}
-where \( Z = \sum_{\omega} \EulerE^{-E(\omega)/kT} \) is the partition
+    (\omega)
+    = \frac{1}{Z} \sum\limits_{\omega \in \Omega} M(\omega) \EulerE^{-E
+    (\omega)/\kT}.
+\]
+where \( Z = \sum_{\omega} \EulerE^{-E(\omega)/\kT} \) is the partition
 function,%
 \index{partition function}
 the probability normalizing factor.  At high temperatures there is no
@@ -253,8 +258,8 @@ temperatures to find the average magnetization as a function of
 temperature to find where the phase change occurs.  The Metropolis
 algorithm takes a random walk through the configuration space, visiting
 more frequently occurring spin configurations more often.  Instead of
-choosing configurations randomly, then weighting them with \( \EulerE^{-E/kT}
-\), instead choose configurations with probability \( \EulerE^{-E/kT} \)
+choosing configurations randomly, then weighting them with \( \EulerE^{-E/\kT}
+\), instead choose configurations with probability \( \EulerE^{-E/\kT} \)
 and weight them evenly.
 \begin{enumerate}
     \item
@@ -283,10 +288,10 @@ and weight them evenly.
         Make a random choice to take the new configuration or keep the
         previous one, weighted by the relative likelihoods of the new
         configuration versus the old one.  Using the Boltzmann
-        distribution, the likelihood ratio is \( \EulerE^{\Delta E/kT} \).
+        distribution, the likelihood ratio is \( \EulerE^{\Delta E/\kT} \).
 \end{enumerate}
 
-The two scripts below illustrate the two approaches.  The script \texttt
+The scripts below illustrate the two approaches.  The script \texttt
 {isingDist.R} calculates the entire configuration space, the individual
 energy of each configuration and the partition function. However it is
 only practical for \( N = 2, 3, 4 \), not refined enough to demonstrate
@@ -302,13 +307,13 @@ considered here.
 
 \subsection*{Gibbs Sampling}
 
-The Gibbs sampler is an algorithm for generating random variables from a
+The \defn{Gibbs sampler} is an algorithm for generating random variables from a
 marginal distribution indirectly, without having to calculate the
 density. This subsection illustrates the algorithm by exploring simple
 cases.  In such cases, Gibbs sampling is based only on elementary
 properties of Markov chains.
 
-Give a joint density \( f(x, y_1, \dots, y_p) \),%
+Given a joint density \( f(x, y_1, \dots, y_p) \),%
 \index{joint density}
 the goal is to find characteristics of the marginal density%
 \index{marginal density}
@@ -329,7 +334,7 @@ First consider the two-variable case.  Starting with a pair of random
 variables \( (X, Y) \), the Gibbs sampler generates a sample from \( f(x)
 \) by sampling instead from the conditional distribution \( f(x \given
 y) \) and \( f(y \given x) \), distributions often already known in
-statistical models.  This is done by generating a ``Gibbs sequence''%
+statistical models.  This is done by generating a \emph{Gibbs sequence}%
 \index{Gibbs sequence}
 of random variables
 \begin{equation}
@@ -450,7 +455,7 @@ marginal density of \( X \), the density to which \( f_{X'_k \given X'_0}
 
 \subsection*{Gibbs Sampling in Statistics}
 
-Suppose \( f(x_1, x_2, \dots, x_N) \) is a probability distribution in
+Suppose \( f(x_1, x_2, \dots, x_N) \) is a probability density in
 which the variables represent parameters of a statistical model.  The
 goal is to get point and interval estimates for these parameters.  To
 fit this into the Gibbs sampling framework, assume all the
@@ -475,17 +480,18 @@ follows:
         Generate a sample \( x_3^1 \) from \( f(x_3 \given x_1^1, x_2^1,
         x_4^0, \dots, x_N^0) \).
     \item
-        Continue in the same way through \( i = 4, \dots, N-1 \).
-    \item
+        Continue in the same way through \( i = 4, \dots, N-1 \) \dots
+    \item[N.]
         Generate a sample \( x_N^1 \) from \( f(x_N \given x_1^1, x_2^1,
         \dots, x_{N-1}^1) \).
 \end{enumerate}
 One cycle, like a raster scan of an image, produces a new value \(
-\overrightarrow{x}^1 \).  Repeating this process \( M \) times produces
+\overrightarrow{x}^1 \).  Repeating this process \( M \) times
+produces the sequence
 \[
     \overrightarrow{x}^0, \overrightarrow{x}^1, \overrightarrow{x}^2,
     \dots, \overrightarrow{x}^M
-\] which approximates a sample from the joint probability distribution \(
+\] approximating a sample from the joint probability density \(
 f(x_1, x_2, \dots, x_N) \).
 
 Using this sample, almost any property of the probability distribution
@@ -507,10 +513,10 @@ component \( x_1 \),
 x_1^M \).  A \( 95\% \) confidence interval for \( x_1 \) can be taken
 directly from the sample.
 
-Apply this formalism to a \defn{Bayesian hierarchical model}.%
+Apply Gibbs sampling  to a \defn{Bayesian hierarchical model}.%
 \index{Bayesian hierarchical model}
 Bayesian hierarchical models naturally describe the connections between
-data, observed parameters and other unobserved parameters, sometimes
+data, observed parameters and other unobserved parameters 
 called \emph{latent variables}.  A simple three-level hierarchical model
 uses Bayes' rule to bind together data, \( X \), a parameter to be
 estimated, \( \lambda \), and an additional hyper-parameter, \( \beta \).
@@ -587,10 +593,10 @@ about the parameters.  An extreme case of a non-informative distribution
 is the uniform distribution on the parameter space.
 
 The resulting posterior joint density for the parameters \( \lambda_1,
-\lambda_2, \dots, \lambda_{10} \) along with the scale parameter \(
+ \dots, \lambda_{10} \) along with the scale parameter \(
 \beta \) is
 \[
-    F(\lambda_1, \lambda_2, \dots, \lambda_{10}, \beta \given X) \propto
+    F(\lambda_1, \dots, \lambda_{10}, \beta \given X) \propto
     \left[ \prod_{i=1}^{10} \frac{(\lambda_i t_i)^{s_i} \EulerE^{-\lambda_i
     t_i}}{s_i!} \right] \left[ \prod_{i=1}^{10} \frac{\lambda_i^{\alpha-1}
     \EulerE^{-\lambda_i/\beta}}{\beta^{\alpha} \Gamma(\alpha)} \right]
@@ -623,16 +629,18 @@ sampling requirement that these distributions be available.
 
 \subsection*{Gibbs Sampling for Digital Images}
 
-A simple model of a digital image consists of pixel elements arranged on
-a rectangular lattice with \( N \) sites.  Each pixel takes a value from
-a set \( S = \set{1,2, \dots, K} \) of levels, such as grayscale or
-color levels.  An image is a configuration \( \omega \in \Omega \) with
-an assignment of a level to each of the \( N \) sites.  Even modestly
-sized images result in immensely large configuration spaces, for a \(
-100 \times 100 \) binary image, \( \card{\Omega} = 2^{10000} \).
+A simple model of a digital image consists of pixel elements arranged
+on a rectangular lattice with \( N \) sites.  Each pixel takes a value
+from a set \( S = \set{1,2, \dots, K} \) of levels, such as grayscale
+or color levels.  For simplicity and analogy to the Ising model, take
+a black and white image with pixel levels \( -1, +1 \).An image is a
+configuration \( \omega \in \Omega \) with an assignment of a level to
+each of the \( N \) sites.  Even modestly sized images result in
+immensely large configuration spaces, for a \( 100 \times 100 \)
+binary image, \( \card{\Omega} = 2^{10000} \).
 
 Consider a model for image degradation with additive noise, modeled by \(
-N \) independently and identically distributed random variables \(
+N \) independent identically distributed random variables \(
 \mathcal{N} = \set{\eta_1, \eta_2, \dots \eta_N} \).  Specifically, take
 noise with the \( \eta_i \) normally distributed with mean \( 0 \) and
 variance \( \sigma^2 \), that is \( \eta_i \sim N(0, \sigma^2) \).
@@ -668,7 +676,7 @@ By the Law of Total Probability the denominator is
     \df{\omega}.
 \] This integral (or sum) is over all \( \omega \in \Omega \) and does
 not depend on \( \omega \).  This is reminiscent of the partition
-function and recalling the Metropolis algorithm we ignore it.
+function and recalling the Metropolis algorithm, just ignore it.
 
 The likelihood function \( \Prob{\omega^{\text{blurred}} \given \omega} \)
 is%
@@ -681,7 +689,7 @@ is%
 \] where any constant of proportionality will be absorbed into the
 denominator above.
 
-Consider that an image has patterns, i.e.\ contiguous regions of similar
+An image has patterns, i.e.\ contiguous regions of similar
 pixel values.  On the other hand, if neighboring values are
 uncorrelated, the result is the visual equivalent of noise.  This is
 reminiscent of the Ising model, where after magnetization the lattice
@@ -689,15 +697,15 @@ has high-degree long-range correlation between pixels, that is,
 image-like features.
 
 This suggests using the Boltzmann probability distribution with the
-Ising energy function as the prior distribution on images, that is
+Ising potential energy function as the prior distribution on images, that is
 \[
-    \Prob{\omega} \propto \EulerE^{-E_{\text{ising}}(\omega)/kT}
+    \Prob{\omega} \propto \EulerE^{-E_{\text{ising}}(\omega)/\kT}
   \] where
 \[
     E_{\text{ising}}(\omega) = -J \sum\limits_{i=1}^{N} \sum\limits_{k=1}^4 \omega_{i,
-    j} \omega_{\left\langle i,j \right\rangle[k]} 
+    j} \omega_{\langle i\rangle[k]} 
 \] is the nearest neighbor affinity.
-To retain the idea of correlated pixel values, let \( kT/J = 1 < T_c \),
+To retain the idea of correlated pixel values, let \( \kT/J = 1 < T_c \),
 the critical temperature below which a phase transition occurs.
 
 Putting all the parts together, the posterior distribution, \( \Prob{\omega
@@ -707,7 +715,7 @@ Putting all the parts together, the posterior distribution, \( \Prob{\omega
     {1}{2\sigma^2 } \sum\limits_{i=1}^N(\omega_i^{\text{blurred}} -
     \omega_i)^{2}} \EulerE^{-E_{\text{ising}}} \\
     &\propto \EulerE^{-\left[ \frac{1}{2\sigma^2 } \sum\limits_{i=1}^N(\omega_i^
-    {\text{blurred}} - \omega_i)^{2} + E_{\text{ising}}  \right] }
+    {\text{blurred}} - \omega_i)^{2} + E_{\text{ising}}  \right] }.
 \end{align*}
 Viewing this from a
 statistical mechanics perspective leads to an analog of an energy
@@ -717,12 +725,11 @@ function
       } \sum\limits_{i=1}^N(\omega_i^{\text{blurred}} - \omega_i)^{2} +
       E_{\text{ising}} \\
     &= \frac{1}{2\sigma^2 } \sum\limits_{i=1}^N(\omega_i^{\text{blurred}}
-    + \omega_i)^{2} - \sum\limits_{\langle i,j\rangle} \omega_i\omega_j
+    + \omega_i)^{2} - \sum\limits_{\langle i\rangle[k]} \omega_i\omega_k
     \\
 \end{align*}
-where \( {\langle i,j\rangle} \) indicates the set of nearest neighbor
-sites \( j \) for site \( i \).  (Continue to check signs on this
-energy function.)
+where \( {\langle i\rangle} \) indicates the set of nearest neighbor
+sites for site \( i \).
 
 Finding the most probable original image \( \omega \) given \( \omega^{\text
 {blurred}} \) is thus equivalent to minimizing \( E_{\text{image}}(\omega
@@ -733,7 +740,7 @@ straying too far from the data \( \omega^{\text{blurred}} \) while the
 second term represents a negative potential energy reflecting
 the desire to align neighboring pixel values
 making them conform to the prior notion of a generic image.  The optimal
-solution balances between these two conflicting constraints.
+solution balances between these two conflicting objectives.
 
 Creating an energy function to minimize leads to an interesting
 contrast.  The Ising model starts
@@ -743,20 +750,20 @@ image reconstruction model starts with a probabilistic situation with a
 Bayesian structure, leading to an energy function.
 
 To implement Gibbs sampling, the
-probability of \( \omega_i \) conditioned on all the other sites depends
-on only the sites in the nearest neighborhood set.  Suppressing the
+probability of \( \omega_i \) conditioned on \emph{all} the other sites depends
+on \emph{only} the sites in the nearest neighborhood set.  Suppressing the
 dependence on \( \omega^{\text{blurred}} \), this means
 \begin{align*}
     \Prob{\omega_i \given \omega_j, j \ne i }  &= \Prob
-    { \omega_i \given \omega_j, j \in \langle i,j \rangle } \\
+    { \omega_i \given \omega_j, j \in \langle i\rangle } \\
     & \propto \EulerE^{-E_i(\omega_i \given \omega_j, j \in
-    \langle i,j \rangle)}
+    \langle i \rangle)}
 \end{align*}
 where
 \[
-  E_i(\omega_i \given \omega_j, j \in \langle i,j \rangle) =
+  E_i(\omega_i \given \omega_j, j \in \langle i \rangle) =
   \frac{1}{2\sigma^2}(\omega_i^{\text{blurred}}-\omega_i)^2 -
-    \sum\limits_{\langle i, j \rangle} \omega_i\omega_j.
+    \sum\limits_{\langle i,\rangle[k]} \omega_i\omega_k.
 \] (Continue to check signs on this
 energy function.) A probability distribution whose conditional probabilities depend on
 only the values in a neighborhood system is called a \defn{Gibbs
@@ -771,15 +778,13 @@ sites are visited many times.  At a selected site \( i \), select \(
 \omega_i = k \) with probability
 \[
     \Prob{\omega_i = k} \propto \EulerE^{-\frac{1}{2\sigma^2}(\omega_i^{\text
-    {blurred}}-k)^2 - \sum\limits_{\langle i, j \rangle} k \omega_j}.
+    {blurred}}-k)^2 - \sum\limits_{\langle i \rangle[j]} k \omega_j}.
 \] Repeating this with many raster scans results in a sequence of images
 that approximates a sample from the posterior distribution. Note the
 connection to the previous simple Gibbs sampling algorithm, generating a
 sample from \( f(x) \) by sampling iteratively from the conditional
-distribution \( f(x, \given y) \) then \( f(y \given x) \), creating
-\[
-    Y'_0, X'_0, Y'_1, X'_1, Y'_2, X'_2, \dots, Y'_k, X'_k
-\] except that now there are many more conditional distributions, one
+distribution \( f(x, \given y) \),
+except that now there are many more conditional distributions, one
 for each pixel.
 
 Gibbs sampling fits into the Hastings generalization of the Metropolis
@@ -826,20 +831,17 @@ with \( N = 10^4 \) pixels, using the theorem requires \( \EulerE^{20{,}000}
 \) steps to go from \( T = 4 \) to \( T = 0.5 \).  In practice, it takes
 about \( 300 - 1000 \) raster scans to produce acceptable results.
 
-For a two-color ($k = 0$ or $1$) image Gibbs sampling with annealing is especially straightforward
+For a two-color ($k = -1$ or $1$) image Gibbs sampling with annealing is especially straightforward
 to implement using the ideas of the section on Gibbs sampling.  At the
 pixel $\omega_i$ define
 \[
     E^k = \frac{1}{2 \sigma^2}( k - \omega_i^{\text{blurred}})^2 + k
     \sum\limits_{\langle i,j\rangle} \omega_j.
   \]
-  Set $\omega_i = k$ with probability
+  Set $\omega_i = \pm 1$ with probability
   \[
-    \frac{\EulerE^{-E^k/T}}{\EulerE^{-E^0/kT} + \EulerE^{-E^1/kT}}
+    \frac{\EulerE^{-E^k/T}}{\EulerE^{-E^{-1}/\kT} + \EulerE^{-E^1/\kT}}
   \]
-(Continue to check signs on this
-energy function.  Note also the multiple uses of the symbol $k$ here
-along with possible typos.)  
   
 \visual{Section Starter Question}{../../../../CommonInformation/Lessons/question_mark.png}
 \section*{Section Ending Answer}
@@ -854,7 +856,7 @@ f(x,y) \).
 
 This section is adapted from
 \cite{richey10}.  Additional ideas about the Ising model and the
-associated Metropolis algorithm are adpated from
+associated Metropolis algorithm are adapted from
 \cite{schlusser18}.  The subsection on the elementary formulation of
 Gibbs sampling is from
 \cite{casella92}.
