@@ -6,8 +6,9 @@
 
 \documentclass[12pt]{article}
 
-\input{../../../../etc/macros} %\input{../../../../etc/mzlatex_macros}
-\input{../../../../etc/pdf_macros}
+\input{../../../../etc/macros}
+\input{../../../../etc/mzlatex_macros}
+%% \input{../../../../etc/pdf_macros}
 
 % Define a new command so Boltzmann constant is not confused.
 \newcommand{\kT}{{\text k}_{\text{Boltz}}T}
@@ -868,150 +869,171 @@ Gibbs sampling is from
 
 \subsection*{Algorithm}
 
+The \texttt{codebox} environment from the \texttt{clrscode3e} package
+must have some error which appears when converting to HTML with
+\texttt{TeX4ht} but not when processing to PDF with \LaTeX.  So
+algorithms commented out for MathML versions.
+
+\begin{comment}
+
+\newpage
+
+\begin{footnotesize}
+\begin{minipage}[t]{1.0\linewidth}
 \begin{codebox}
-\li  \Procname{IsingDist}
-\li  \Comment Plot magnetization versus temperature for the Ising model.
-\li  \Comment WARNING: Use only for $N=2,3,4$.
-\li  \kw{Require:}  Affinity constant $J$
-\li  \kw{Require:} Size (side length) of grid $N$
-\li  \kw{Require:} Number of normalized temperatures, and list of
-\zi    temperatures around $kT_c/J = 2.269$ when $J=1$
-\li  \Return Plot of magnetization versus temperature
-\li  \For Temperature array
-\li      \Do
+  \Procname{IsingDist}
+  \zi  Comment Plot magnetization versus temperature for the Ising model.
+  \zi  Comment WARNING: Use only for $N=2,3,4$.
+  \li  Require:  Affinity constant $J$
+  \li    Require:  Size (side length) of grid $N$
+  \li    Require:  Number of normalized temperatures, and list of
+  \li    temperatures around $kT_c/J = 2.269$ when $J=1$
+  \li  \Return Plot of magnetization versus temperature
+\  li  \For Temperature array
+  \li      \Do
                Calculate magnetization over all configurations
-\li  \End
-\li  Plot magnetization versus temperatures
-\zi  
-\li  \proc{magnetization}(configurations, normalized Temperature)
-\li   Utility function to compute magnetization at a temperature
-\li   uses \proc{partitionFunction}, \proc{netSpin}, \proc{boltzDist}
-\zi
-\li  \proc{netSpin}(configurations, $N$)
-\li   Utility function to compute
-\li   Absolute value of sum of entries in each matrix
-\zi
-\li  \proc{partitionFunction}(configurations, normalized Temperature)
-\li   Utility function to compute the sum of all Boltzman energies
-\li   uses \proc{boltzDist}
-\zi
-\li  \proc{boltzDist}(configurations, normalized Temperature)
-\li   Utility function to compute energies of all configurations
-\li   Uses \proc{allEnergies}
-\zi
-\li  \proc{allEnergies}(configurations)
-\li   Apply energy function across all configurations
-\li   Uses \proc{energy}
-\zi
-\li  \proc{energy}(config, $J=1$)
-\li   Computes potential energy by nearest neighbor affinity,
-\li   value is negative with lowest energy $-4 N^2$.
-\zi
-\li  \proc{allConfigs}($N$)
-\li   Utility function returns LIST of all square configs
-\li   uses \proc{allBinarySeq}
-\zi
-\li  \proc{allBinarySeq}($N$)
-\li   Utility function to make all possible combinations of $\pm 1$
-\li  over $N$ places.
-i\end{codebox}
+  \li  \End
+  \li  Plot magnetization versus temperatures
+  \zi  
+  \li  \proc{magnetization}(configurations, normalized Temperature)
+  \li   Utility function to compute magnetization at a temperature
+  \li   uses \proc{partitionFunction}, \proc{netSpin}, \proc{boltzDist}
+  \zi
+  \li  \proc{netSpin}(configurations, $N$)
+  \li   Utility function to compute
+  \li   Absolute value of sum of entries in each matrix
+  \zi
+  \li  \proc{partitionFunction}(configurations, normalized Temperature)
+  \li   Utility function to compute the sum of all Boltzman energies
+  \li   uses \proc{boltzDist}
+  \zi
+  \li  \proc{boltzDist}(configurations, normalized Temperature)
+  \li   Utility function to compute energies of all configurations
+  \li   Uses \proc{allEnergies}
+  \zi
+  \li  \proc{allEnergies}(configurations)
+  \li   Apply energy function across all configurations
+  \li   Uses \proc{energy}
+  \zi
+  \li  \proc{energy}(config, $J=1$)
+  \li   Computes potential energy by nearest neighbor affinity,
+  \li   value is negative with lowest energy $-4 N^2$.
+  \zi
+  \li  \proc{allConfigs}($N$)
+  \li   Utility function returns LIST of all square configs
+  \li   uses \proc{allBinarySeq}
+  \zi
+  \li  \proc{allBinarySeq}($N$)
+  \li   Utility function to make all possible combinations of $\pm 1$
+  \li  over $N$ places.
+\end{codebox}
+\end{minipage}
+\end{footnotesize}
 
+\begin{footnotesize}
+\begin{minipage}[t]{1.0\linewidth}
 \begin{codebox}
-\li  \Procname{IsingMetropolis}
-\li  \Comment Find magnetization for a temperature for the Ising model
-\li    using Metropolis algorithm
-\li  \kw{Require:} Affinity constant $J$, normalized temperature
-\li  \kw{Require:} Size of grid $N$, number of steps for MCMC algorithm
-\li   Create a random configuration of size $N \times N$.
-\li  \For{$i$ in number of MCMC algorithm steps}
-\li  \Do 
-\li       Create a new configuration using Metropolis MCMC step
-\li  \End
-\li   Plot grayscale image of final configuration
-\zi
-\li  \proc{metropolisMCStep}(configuration, $N$)
-\li   Pick a random site in the configuration.
-\li   Flip spin at the random site, label it with prime.
-\li   Find the coordinate of the (periodic) neighboring sites.
-\li   Using the neighboring sites, find the change in energy due to
-      the flip.
-\li   Compute the Boltzman function $p$ of the energy change
-\li  \If random uniform variate less than $p$
-\li      \Then
+  \Procname{IsingMetropolis}
+  \zi  Comment Find magnetization for a temperature for the Ising model
+  \zi    using Metropolis algorithm
+  \li  Require: Affinity constant $J$, normalized temperature
+  \li  Require: Size of grid $N$, number of steps for MCMC algorithm
+  \li   Create a random configuration of size $N \times N$.
+  \li  \For{$i$ in number of MCMC algorithm steps}
+  \li  \Do 
+  \li       Create a new configuration using Metropolis MCMC step
+  \li  \End
+  \li   Plot grayscale image of final configuration
+  \zi
+  \li  \proc{metropolisMCStep}(configuration, $N$)
+  \li   Pick a random site in the configuration.
+  \li   Flip spin at the random site, label it with prime.
+  \li   Find the coordinate of the (periodic) neighboring sites.
+  \li   Using the neighboring sites, find the change in energy due to
+        the flip.
+  \li   Compute the Boltzman function $p$ of the energy change
+  \li  \If random uniform variate less than $p$
+  \li  \Then
           The new site value is the prime, return new configuration.
-\li  \Else
+  \li  \Else
           Return original configuration.
-\li  \End
-\li       uses \proc{randomSite}, \proc{boltzWeight}, \proc{surroundNeighbors}
-\zi          
-\li  \proc{surroundingNeighbors}(site)
-\li   Utility function to return the coordinates of the (periodic) neighboring states.
-
-\li  \proc{boltzWeight}(energy, normalized temperature)
-\li   Utility function to return the Boltzman weight
-\li   of the given energy and temperature.
-\zi
-\li  \proc{randomSite}($N$)
-\li   Utility function to return a randomly picked site from $N \times N$
-  configuration.
-\zi
-\li  \proc{randomConfig}(N)
-\li   Utility function to return a random configuration,
-\li   an $N \times N$ matrix of $\pm 1$. 
+  \li  \End
+  \li       uses \proc{randomSite}, \proc{boltzWeight}, \proc{surroundNeighbors}
+  \zi          
+  \li  \proc{surroundingNeighbors}(site)
+  \li   Utility function to return the coordinates of the (periodic) neighboring states.
+  \zi
+  \li  \proc{boltzWeight}(energy, normalized temperature)
+  \li   Utility function to return the Boltzman weight
+  \li   of the given energy and temperature.
+  \zi
+  \li  \proc{randomSite}($N$)
+  \li   Utility function to return a randomly picked site from $N \times N$
+        configuration.
+  \zi
+  \li  \proc{randomConfig}(N)
+  \li   Utility function to return a random configuration,
+  \li   an $N \times N$ matrix of $\pm 1$. 
 \end{codebox}
+\end{minipage}
+\end{footnotesize}
 
+\begin{footnotesize}
+\begin{minipage}[t]{1.0\linewidth}
 \begin{codebox}
-\li  \Comment Use Gibbs sampling to restore a blurred picture
-\li  \kw{Require:} Size $N$ of $N \times N$ grid, number of iterations of
+  \Procname{GibbsImage}
+  \zi  Comment Use Gibbs sampling to restore a blurred picture
+  \zi    Require: Size $N$ of $N \times N$ grid, number of iterations of
     raster scan.
-\li   Create a test picture with utility function  \proc{makePicture}
-\li   Blur picture with utility function \proc{makeBlurredPicture}
-\li   Copy blurred picture into a holding place
-\li  \For Number of iterations
-\li    Make a new picture with the \proc{rasterScan} function
-\li   Copy new picture into holding place
-\li  \End
-\li   Plot the test Picture and the raster scanned picture
-\zi
-\li  \proc{rasterScan}(picture, blurred picture, $\sigma$)
-\li   Get the number of rows and columns
-\li   Do a raster scan over the picture with the utility function \proc{gibbsSample}.
-\zi
-\li  \proc{gibbsSample}(site, picture, blurred, $\sigma$)
-\li   Get a uniform random variate $x$.
-\li   Calculate $p$ with utility function \proc{probSite}
-\li  \If  $x < p$
-\li   Set $k = 0$
-\li  \Else
-\li   Set $k = 1$
-\li  \End
-\li   Return $k$
-\zi
-\li  \proc{probSite}(site, picture, blurred, $N$, $\sigma$)
-\li   The first term is a penalty for
- straying too far from the data \( \omega^{\text{blurred}} \) while the
-second term represents the desire to align neighboring pixel values
-making them conform to the prior notion of a generic image.
-\li  Return conditional probability
-\li Uses utility function \proc{surroundNeighbors}
+  \li   Create a test picture with utility function  \proc{makePicture}
+  \li   Blur picture with utility function \proc{makeBlurredPicture}
+  \li   Copy blurred picture into a holding place
+  \li  \For Number of iterations
+  \li    Make a new picture with the \proc{rasterScan} function
+  \li   Copy new picture into holding place
+  \li  \End
+  \li   Plot the test Picture and the raster scanned picture
+  \zi
+  \li  \proc{rasterScan}(picture, blurred picture, $\sigma$)
+  \li   Get the number of rows and columns
+  \li   Do a raster scan over the picture with the utility function \proc{gibbsSample}.
+  \zi
+  \li  \proc{gibbsSample}(site, picture, blurred, $\sigma$)
+  \li   Get a uniform random variate $x$.
+  \li   Calculate $p$ with utility function \proc{probSite}
+  \li  \If  $x < p$
+  \li   Set $k = 0$
+  \li  \Else
+  \li   Set $k = 1$
+  \li  \End
+  \li   Return $k$
+  \zi
+  \li  \proc{probSite}(site, picture, blurred, $N$, $\sigma$)
+  \li   The first term is a penalty for
+  \li      straying too far from the data \( \omega^{\text{blurred}} \) while the
+  \li      second term represents the desire to align neighboring pixel values
+  \li      making them conform to the prior notion of a generic image.
+  \li  Return conditional probability
+  \li Uses utility function \proc{surroundNeighbors}
 
-\li\proc{surroundNeighbors}(site, $N$)
-\li Utility function to return (periodic) nearest neighbors.
-\zi
-\li\proc{makeBlurredPicture}($N$, $\sigma$)
-\li Utility function to make a specked, blurred image
-\li\Comment Uses utility functions \proc{makeNoise}, \proc{roundPicture}
-\zi
-\li\proc{roundPicture}($M$)
-\li Round real number to nearest of $0$, $1$.
-\zi
-\li\proc{makeNoise}
-\li Generate some random (Gaussian, mean $0$, standard deviation
-\li$sigma$), to add to a picture.
-\zi
-\li\proc{makePicture}($N$)
-\li Make a simple test picture with two rectangular patches.
+  \li\proc{surroundNeighbors}(site, $N$)
+  \li Utility function to return (periodic) nearest neighbors.
+  \li\proc{makeBlurredPicture}($N$, $\sigma$)
+  \li Utility function to make a specked, blurred image
+  \zi Comment: Uses utility functions \proc{makeNoise}, \proc{roundPicture}
+  \li\proc{roundPicture}($M$)
+  \li Round real number to nearest of $0$, $1$.
+  \li\proc{makeNoise}
+  \li Generate some random noise (Gaussian, mean $0$, standard deviation
+  \li $sigma$), to add to a picture.
+  \li \proc{makePicture}($N$)
+  \li Make a simple test picture with two rectangular patches.
 \end{codebox}
+\end{minipage}
+\end{footnotesize}
+
+  
+\end{comment}
 
 \subsection*{Scripts}
 
